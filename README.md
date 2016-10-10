@@ -1,0 +1,3 @@
+# STAFFWARS API
+サーバサイドのAPI
+
