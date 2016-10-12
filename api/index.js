@@ -32,36 +32,42 @@ function create_response(result, message, data) {
  * name
  */
 router.post('/boss', (req, res, next) => {
+  res.json(create_response(NG, 'not impl', {}))
 })
 
 /**
  * ボス情報の一覧取得
  */
 router.get('/boss', (req, res, next) => {
+  res.json(create_response(NG, 'not impl', {}))
 })
 
 /**
  * ボス情報の更新
  */
 router.post('/boss/:id', (req, res, next) => {
+  res.json(create_response(NG, 'not impl', {}))
 })
 
 /**
  * ボス情報の詳細取得
  */
 router.get('/boss/:id', (req, res, next) => {
+  res.json(create_response(NG, 'not impl', {}))
 })
 
 /**
  * 部下が上司の待ち登録
  */
 router.post('/boss/:id/regist', (req, res, next) => {
+  res.json(create_response(NG, 'not impl', {}))
 })
 
 /**
  * 待ち人数を取得する
  */
 router.get('/boss/:id/regist', (req, res, next) => {
+  res.json(create_response(NG, 'not impl', {}))
 })
 
 
