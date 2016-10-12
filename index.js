@@ -16,6 +16,6 @@ const api = require('./api')
 app.use('/api', api)
 
 // サーバの起動
-app.listen(process.env.port | 3000, () => {
+app.listen(process.env.port, () => {
   console.log('Example app listening on port 3000!');
 });
