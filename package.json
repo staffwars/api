@@ -1,0 +1,31 @@
+{
+  "name": "staffwars",
+  "version": "1.0.0",
+  "engines": {
+    "node": "6.0.0"
+  },
+  "description": "MA2016",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/staffwars/staffwars.git"
+  },
+  "keywords": [
+    "MA2016"
+  ],
+  "author": "STAFF WARS",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/staffwars/staffwars/issues"
+  },
+  "homepage": "https://github.com/staffwars/staffwars#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "request": "^2.75.0"
+  }
+}
