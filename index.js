@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // ルーティング
 console.log('setup routing');
-const api = require('./api')
+const api = require('./api/')
 app.use('/api', api)
 
 console.log('load MilkCocoa libirary');
