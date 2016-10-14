@@ -159,7 +159,8 @@ router.post('/boss/:id/unregist', (req, res, next) => {
  * 早押し開始
  */
 router.post('/boss/:id/start', (req, res, next) => {
-  get_boss(req.params.id, res)
+  const boss_id = req.params.id;
+  get_boss(boss_id, res)
     .then( (boss) => {
       console.log('count down');
       const start_sec = 10; // 何秒後に開始するかの指定
@@ -177,7 +178,10 @@ router.post('/boss/:id/start', (req, res, next) => {
       // 開始から３秒後に全体に通知を出す？
       setTimeout(() => {
         console.log('finish');
-        ds.send({result: boss.push_list});
+        get_boss(boss_id)
+          .then( (boss) => {
+            ds.send({result: boss.push_list});
+          })
       }, (start_sec + 3) * 1000);
 
       ds.send({datetime: date})
