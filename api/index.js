@@ -163,7 +163,7 @@ router.post('/boss/:id/start', (req, res, next) => {
   get_boss(boss_id, res)
     .then( (boss) => {
       console.log('count down');
-      const start_sec = 10; // 何秒後に開始するかの指定
+      const start_sec = 5; // 何秒後に開始するかの指定
       let date = new Date()
       date.setSeconds(date.getSeconds() + start_sec)
       
@@ -175,14 +175,14 @@ router.post('/boss/:id/start', (req, res, next) => {
         console.log('start');
       }, start_sec * 1000);
 
-      // 開始から３秒後に全体に通知を出す？
+      // 開始から5秒後に全体に通知を出す？
       setTimeout(() => {
         console.log('finish');
         get_boss(boss_id)
           .then( (boss) => {
             ds.send({result: boss.push_list});
           })
-      }, (start_sec + 3) * 1000);
+      }, (start_sec + 5) * 1000);
 
       ds.send({datetime: date})
       success_response(res, date);
