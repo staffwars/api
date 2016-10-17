@@ -1,0 +1,198 @@
+swagger: '2.0'
+info:
+  version: "1.0.0"
+  title: STAFF WARS API
+schemes:
+  - https
+produces:
+  - application/json
+  
+paths:
+  /api/boss/:
+    post:
+      description: 上司の新規登録
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                title: 名前
+                type: string
+      responses:
+        200:
+          description: 成功
+          schema:
+            $ref: '#/definitions/Boss'
+        default:
+          description: エラー
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      description: 上司の情報一覧
+      responses:
+        200:
+          description: 成功
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Boss'
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
+
+  /api/boss/{boss_id}/:
+    post:
+      description: 上司の情報の更新
+      parameters:
+        - name: boss_id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: 成功
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Boss'
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      description: 上司の情報取得
+      parameters:
+        - name: boss_id
+          in: path
+          required: true
+          type: string
+      responses:
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
+
+  /api/boss/{boss_id}/regist/:
+    post:
+      description: 上司待ちを登録する
+      parameters:
+        - name: boss_id
+          in: path
+          required: true
+          type: string
+      responses:
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      description: 現在の上司待ち登録情報を取得する
+      parameters:
+        - name: boss_id
+          in: path
+          required: true
+          type: string
+      responses:
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
+
+  /api/boss/{boss_id}/unregist/:
+    post:
+      description: 上司待ちを解除する
+      parameters:
+        - name: boss_id
+          in: path
+          required: true
+          type: string
+      responses:
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
+
+  /api/boss/{boss_id}/start/:
+    post:
+      description: 早押し開始
+      parameters:
+        - name: boss_id
+          in: path
+          required: true
+          type: string
+      responses:
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
+
+  /api/boss/{boss_id}/push/:
+    post:
+      description: 部下が早押しボタンを押した
+      consumes:
+        - application/json
+      parameters:
+        - name: boss_id
+          in: path
+          required: true
+          type: string
+        -
+          name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              boss:
+                title: 上司のID
+                type: string
+              id:
+                title: 部下のID
+                type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            title: 受付結果
+            type: object
+            properties:
+              data:
+                type: string
+                title: メッセージ
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  Error:
+    title: エラー情報
+    type: object
+    properties:
+      message:
+        type: string
+        title: エラーメッセージ
+      error:
+        type: object
+        title: エラー内容
+        
+  Boss:
+    title: 上司情報
+    type: object
+    properties:
+      name:
+        type: string
+        title: 名前
+      start_datetime:
+        type: string
+        title: 開始予定時刻
+      registry:
+        title: 待っている部下達
+        type: array
+        items:
+          type: object
+        
