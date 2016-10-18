@@ -175,18 +175,18 @@ router.post('/boss/:id/start', (req, res, next) => {
 
       // カウントダウン開始時刻の通知
       console.log('count down: notice');
-      ds.send({type: 'notice', id: boss_id, datetime: start_date})
+      ds.push({type: 'notice', id: boss_id, datetime: start_date})
 
       // カウントダウン開始の通知
       setTimeout(() => {
         console.log('count down: start');
-        ds.send({type: 'start', id: boss_id, datetime: start_date})
+        ds.push({type: 'start', id: boss_id, datetime: start_date})
       }, start_sec * 1000);
 
       // カウントダウン終了の通知
       setTimeout(() => {
         console.log('count down: finish');
-        ds.send({type: 'finish', id: boss_id, datetime: start_date})
+        ds.push({type: 'finish', id: boss_id, datetime: start_date})
       }, (start_sec + count_sec) * 1000);
 
       // 結果の通知
@@ -194,7 +194,7 @@ router.post('/boss/:id/start', (req, res, next) => {
         console.log('count down: result');
         get_boss(boss_id)
           .then( (boss) => {
-            ds.send({type: 'result', id: boss_id, datetime: start_date, result: boss.push_list});
+            ds.push({type: 'result', id: boss_id, datetime: start_date, result: boss.push_list});
           })
       }, (start_sec + count_sec + result_sec) * 1000);
 
