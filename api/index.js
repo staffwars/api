@@ -168,7 +168,7 @@ router.post('/boss/:id/start', (req, res, next) => {
 
       // 開始時刻
       let start_date = new Date()
-      date.setSeconds(date.getSeconds() + start_sec)
+      start_date.setSeconds(start_date.getSeconds() + start_sec)
 
       boss.push_list = {};
       boss.register = [];
@@ -198,7 +198,10 @@ router.post('/boss/:id/start', (req, res, next) => {
           })
       }, (start_sec + count_sec + result_sec) * 1000);
 
-      success_response(res, date);
+      success_response(res, start_date);
+    })
+    .catch(error => {
+      console.log(error);
     })
 })
 
