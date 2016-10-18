@@ -15,7 +15,7 @@ const OK = 'ok';
 const NG = 'ng';
 
 let boss_list = {
-  "1": {
+  "0": {
     name: '上司1',
     start_datetime: null,
     register: [
@@ -23,7 +23,7 @@ let boss_list = {
     ],
     push_list: {}
   },
-  "2": {
+  "1": {
     name: '上司２',
     start_datetime: null,
     register: [],
@@ -64,7 +64,7 @@ function error_response(res, message, error) {
     error = {};
   }
 
-  res.statusCode = 400;  
+  res.statusCode = 400;
   res.json({
     message: message,
     error: error
@@ -166,13 +166,14 @@ router.post('/boss/:id/start', (req, res, next) => {
       const start_sec = 5; // 何秒後に開始するかの指定
       let date = new Date()
       date.setSeconds(date.getSeconds() + start_sec)
-      
+
       boss.push_list = {};
       boss.register = [];
 
       // 開始時の処理
       setTimeout(() => {
         console.log('start');
+        ds.send({type: 'countdown_start', countdown: start_sec})
       }, start_sec * 1000);
 
       // 開始から5秒後に全体に通知を出す？
@@ -180,11 +181,11 @@ router.post('/boss/:id/start', (req, res, next) => {
         console.log('finish');
         get_boss(boss_id)
           .then( (boss) => {
-            ds.send({result: boss.push_list});
+            ds.send({type: 'finish', result: boss.push_list});
           })
       }, (start_sec + 5) * 1000);
 
-      ds.send({datetime: date})
+      ds.send({type: 'notice', datetime: date})
       success_response(res, date);
     })
 })
@@ -207,7 +208,7 @@ router.post('/boss/:id/push', (req, res, next) => {
         const datetime = new Date();
         boss.push_list[name] = datetime;
       }
-      success_response(res, boss.push_list);  
+      success_response(res, boss.push_list);
     })
     .catch( (e) => {
       error_response(res, e.message, e.error);
