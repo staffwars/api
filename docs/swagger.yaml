@@ -139,6 +139,14 @@ paths:
           required: true
           type: string
       responses:
+        200:
+          description: 成功
+          schema:
+            type: object
+            properties:
+              data:
+                title: 開始時刻
+                type: string
         default:
           description: エラー
           schema:
