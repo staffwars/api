@@ -2,11 +2,18 @@ swagger: '2.0'
 info:
   version: "1.0.0"
   title: STAFF WARS API
+host: staffwars.azurewebsites.net
 schemes:
   - https
+consumes:
+  - application/json
 produces:
   - application/json
-  
+
+tags:
+  - name: "api"
+    description: STAFF WARS API
+
 paths:
   /api/boss/:
     post:
@@ -52,13 +59,20 @@ paths:
           in: path
           required: true
           type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                title: 名前
+                type: string
       responses:
         200:
           description: 成功
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Boss'
+            $ref: '#/definitions/Boss'
         default:
           description: エラー
           schema:
@@ -147,22 +161,12 @@ paths:
           schema:
             type: object
             properties:
-              boss:
-                title: 上司のID
-                type: string
-              id:
-                title: 部下のID
+              name:
+                title: 部下の名前
                 type: string
       responses:
         200:
-          description: Successful response
-          schema:
-            title: 受付結果
-            type: object
-            properties:
-              data:
-                type: string
-                title: メッセージ
+          description: 成功
         default:
           description: エラー
           schema:
@@ -179,7 +183,7 @@ definitions:
       error:
         type: object
         title: エラー内容
-        
+
   Boss:
     title: 上司情報
     type: object
@@ -195,4 +199,3 @@ definitions:
         type: array
         items:
           type: object
-        
