@@ -162,30 +162,42 @@ router.post('/boss/:id/start', (req, res, next) => {
   const boss_id = req.params.id;
   get_boss(boss_id, res)
     .then( (boss) => {
-      console.log('count down');
-      const start_sec = 5; // 何秒後に開始するかの指定
-      let date = new Date()
+      const start_sec = 10; // 何秒後に開始するかの指定
+      const count_sec = 10; // カウントダウン時間
+      const result_sec = 5; // 結果通知時間
+
+      // 開始時刻
+      let start_date = new Date()
       date.setSeconds(date.getSeconds() + start_sec)
 
       boss.push_list = {};
       boss.register = [];
 
-      // 開始時の処理
+      // カウントダウン開始時刻の通知
+      console.log('count down: notice');
+      ds.send({type: 'notice', id: boss_id, datetime: start_date})
+
+      // カウントダウン開始の通知
       setTimeout(() => {
-        console.log('start');
-        ds.send({type: 'countdown_start', countdown: start_sec})
+        console.log('count down: start');
+        ds.send({type: 'start', id: boss_id, datetime: start_date})
       }, start_sec * 1000);
 
-      // 開始から5秒後に全体に通知を出す？
+      // カウントダウン終了の通知
       setTimeout(() => {
-        console.log('finish');
+        console.log('count down: finish');
+        ds.send({type: 'finish', id: boss_id, datetime: start_date})
+      }, (start_sec + count_sec) * 1000);
+
+      // 結果の通知
+      setTimeout(() => {
+        console.log('count down: result');
         get_boss(boss_id)
           .then( (boss) => {
-            ds.send({type: 'finish', result: boss.push_list});
+            ds.send({type: 'result', id: boss_id, datetime: start_date, result: boss.push_list});
           })
-      }, (start_sec + 5) * 1000);
+      }, (start_sec + count_sec + result_sec) * 1000);
 
-      ds.send({type: 'notice', datetime: date})
       success_response(res, date);
     })
 })
