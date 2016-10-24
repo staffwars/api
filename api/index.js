@@ -14,42 +14,73 @@ const ds = milkcocoa.dataStore('messages');
 const OK = 'ok';
 const NG = 'ng';
 
-let boss_list = {
-  "0": {
+let boss_list = [
+  {
+    id: '0',
     name: '上司1',
     start_datetime: null,
     register: [
-      {id: 1, name: "部下１"}, {id: 2, name: "部下2"}, {id: 3, name: "部下3"}
+      {id: 0, name: "部下１"}, {id: 1, name: "部下2"}, {id: 2, name: "部下3"}
     ],
     push_list: {}
   },
-  "1": {
+  {
+    id: '1',
     name: '上司２',
     start_datetime: null,
     register: [],
     push_list: {}
   }
-}
+]
 
+let subordinate_list = [
+  {
+    id: '0',
+    name: '部下1'
+  },
+  {
+    id: '1',
+    name: '部下２'
+  },
+  {
+    id: '2',
+    name: '部下3'
+  }
+]
 
-/**
- * 上司の情報を取得
- */
-function get_boss(id, res) {
+function get_item(list, id, res) {
   return new Promise((resolve, reject) => {
-    const boss = boss_list[id];
-    if (boss === undefined) {
-      reject({message: 'Boss Not Found', error: {boss_list: boss_list}});
+    const item = list.filter((item) => {
+      return (item.id == id);
+    });
+    // const boss = boss_list[id];
+    if ((item === undefined) ||
+        (item.length == 0)) {
+      reject({message: 'Item Not Found', error: {list: list}});
       return;
     }
-    resolve(boss);
+    resolve(item);
   })
   .catch( (e) => {
     if (res != undefined) {
       error_response(res, e.message, e.error);
     }
     return e;
-  });
+  });  
+}
+
+/**
+ * 上司の情報を取得
+ */
+function get_boss(id, res) {
+  return get_item(boss_list, id, res);
+}
+
+/**
+ * 部下の情報を取得
+ */
+function get_subordinate(id, res) {
+  return get_item(subordinate_list, id, res);
 }
 
 /**
@@ -71,10 +102,55 @@ function error_response(res, message, error) {
   });
 }
 
+/**
+ * 成功
+ */
 function success_response(res, data) {
   res.statusCode = 200;
   res.json({data: data});
 }
+
+/**
+ * 部下の新規登録
+ */
+router.post('/subordinate', (req, res, next) => {
+  const subordinate = {
+    name: req.body.name,
+    id: subordinate_list.length
+  }
+  subordinate_list.push(subordinate);
+  success_response(res, subordinate);
+});
+
+/**
+ * 部下の一覧取得
+ */
+router.get('/subordinate', (req, res, next) => {
+  success_response(res, subordinate_list);
+})
+
+/**
+ * 部下情報の更新
+ */
+router.post('/subordinate/:id', (req, res, next) => {
+  get_subordinate(req.params.id, res)
+    .then( (subordinate) => {
+      subordinate['name'] = req.body.name;
+      success_response(res, subordinate);
+    });
+})
+
+/**
+ * 部下情報の詳細取得
+ */
+router.get('/subordinate/:id', (req, res, next) => {
+  get_subordinate(req.params.id, res)
+    .then( (subordinate) => {
+      success_response(res, subordinate);
+    });
+})
+
+
 
 /**
  * ボス情報の新規登録
@@ -82,14 +158,11 @@ function success_response(res, data) {
 router.post('/boss', (req, res, next) => {
   const boss = {
     name: req.body.name,
+    id: boss_list.length,
     register: [],
     push_list: {}
   }
-  if (req.body.id === undefined) {
-    error_response(res, 'body.id is required', {body: body});
-    return;
-  }
-  boss_list[req.body.id] = boss;
+  boss_list.push(boss);
   success_response(res, boss_list);
 })
 
@@ -128,12 +201,16 @@ router.get('/boss/:id', (req, res, next) => {
 router.post('/boss/:id/regist', (req, res, next) => {
   get_boss(req.params.id, res)
     .then( (boss) => {
-      if (req.body.name === undefined) {
-        error_response(res, 'body.name is required', req.body);
-        return;
-      }
-      boss.register.push({name: req.body.name});
-      success_response(res, boss.register);
+      // 部下情報を登録する
+      const subordinate_id = req.body.id;
+      get_subordinate(subordinate_id, res)
+        .then( (subordinate) => {
+          const match = boss[0].register.filter((item) => {return (item.id == subordinate_id)})
+          if (match.length == 0) {
+            boss[0].register.push(subordinate[0]);
+          }
+          success_response(res, boss[0].register);
+        })
     })
 })
 
@@ -151,7 +228,17 @@ router.get('/boss/:id/regist', (req, res, next) => {
  * 待ちから抜ける
  */
 router.post('/boss/:id/unregist', (req, res, next) => {
-  error_response(res);
+  get_boss(req.params.id, res)
+    .then( (boss) => {
+      // 部下情報を削除する
+      const subordinate_id = req.body.id;
+      get_subordinate(subordinate_id, res)
+        .then( (subordinate) => {
+          const filtered_list = boss[0].register.filter((item) => {return (item.id != subordinate_id)})
+          boss[0].register = filtered_list;
+          success_response(res, boss[0].register);
+        })
+    })
 })
 
 
