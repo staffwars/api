@@ -194,6 +194,15 @@ paths:
           in: path
           required: true
           type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                title: 部下ID
+                type: string
       responses:
         default:
           description: エラー
