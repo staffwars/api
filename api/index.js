@@ -220,7 +220,7 @@ router.post('/boss/:id/regist', (req, res, next) => {
 router.get('/boss/:id/regist', (req, res, next) => {
   get_boss(req.params.id, res)
     .then( (boss) => {
-      success_response(res, boss.register);
+      success_response(res, boss[0].register);
     })
 })
 
