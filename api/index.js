@@ -16,17 +16,17 @@ const NG = 'ng';
 
 let boss_list = [
   {
-    id: '0',
+    id: '00',
     name: '上司1',
     start_datetime: null,
-    register: [
-      {id: 0, name: "部下１"}, {id: 1, name: "部下2"}, {id: 2, name: "部下3"}
-    ],
+    affiliation: 'Z14推進機関',
+    register: [],
     push_list: {}
   },
   {
-    id: '1',
+    id: '01',
     name: '上司２',
+    affiliation: '全部下解放同盟',
     start_datetime: null,
     register: [],
     push_list: {}

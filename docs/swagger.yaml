@@ -324,6 +324,9 @@ definitions:
       name:
         type: string
         title: 名前
+      affiliation:
+        type: string
+        title: 所属
       start_datetime:
         type: string
         title: 開始予定時刻
