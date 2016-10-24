@@ -56,6 +56,49 @@ paths:
           description: エラー
           schema:
             $ref: '#/definitions/Error'
+            
+  /api/subordinate/{subordinate_id}/:
+    post:
+      tags:
+        - subordinate
+      summary: 部下の情報の更新
+      parameters:
+        - name: subordinate_id
+          in: path
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                title: 名前
+                type: string
+      responses:
+        200:
+          description: 成功
+          schema:
+            $ref: '#/definitions/Boss'
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      tags:
+        - subordinate
+      summary: 部下の情報取得
+      parameters:
+        - name: subordinate_id
+          in: path
+          required: true
+          type: string
+      responses:
+        default:
+          description: エラー
+          schema:
+            $ref: '#/definitions/Error'
 
   /api/boss/:
     post:
@@ -193,6 +236,12 @@ paths:
       tags:
         - boss
       summary: 早押し開始
+      description: |
+        リクエストを処理すると、MilkcocoaでPush通知がくる。通知のTypeに応じて処理が分かれる
+        notice => カウントダウン開始時刻の通知
+        start => カウントダウン開始の通知
+        finish => カウントダウン終了の通知
+        result => 早押し結果の通知
       parameters:
         - name: boss_id
           in: path
