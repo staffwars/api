@@ -267,7 +267,7 @@ router.post('/boss/:id/start', (req, res, next) => {
       // カウントダウン開始５秒前の通知
       setTimeout(() => {
         console.log('count down: pre');
-        ds.push({type: 'pre', id: boss_id, datetime: start_date})
+        ds.push({type: 'pre_start', id: boss_id, datetime: start_date})
       }, 5 * 1000);
 
       // カウントダウン開始の通知
@@ -275,6 +275,12 @@ router.post('/boss/:id/start', (req, res, next) => {
         console.log('count down: start');
         ds.push({type: 'start', id: boss_id, datetime: start_date})
       }, start_sec * 1000);
+
+      // カウントダウン終了５秒前の通知
+      setTimeout(() => {
+        console.log('count down: pre');
+        ds.push({type: 'pre_finish', id: boss_id, datetime: start_date})
+      }, (start_sec + count_sec - 5) * 1000);
 
       // カウントダウン終了の通知
       setTimeout(() => {
