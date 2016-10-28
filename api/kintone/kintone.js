@@ -115,6 +115,16 @@ class Kintone {
   }
 
   /**
+   * データの更新
+   */
+  update(body) {
+    return this._put('record.json', body)
+      .then((result) => {
+        return this.read(body.id)
+      })
+  }
+
+  /**
    * データの取得
    */
   read(id) {
