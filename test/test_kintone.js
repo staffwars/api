@@ -184,29 +184,26 @@ describe('Kintone', () => {
       })
 
       it('指定した上司の指定した回の早押し一覧を取得する', () => {
-        return push.list('matsumura-s', 1)
+        return push.list('seki-may', 1)
           .then((records) => {
-            assert.equal(2, records.length);
-            assert.equal('132', records[0].id);
+            assert.equal(1, records.length);
+            assert.equal('141', records[0].id);
             assert.equal('1', records[0].push_id);
-            assert.equal('ショコ・マ・ツムー', records[0].boss);
-            assert.equal('カイ・フク', records[0].subordinate);
-
-            assert.equal('130', records[1].id);
-            assert.equal('1', records[1].push_id);
-            assert.equal('ショコ・マ・ツムー', records[1].boss);
-            assert.equal('イワンコフ', records[1].subordinate);
+            assert.equal('seki-may', records[0].boss.code);
+            assert.equal('inoue-no', records[0].subordinate.code);
           })
       })
     })
 
     context('create', () => {
       it('早押しの登録ができる', () => {
-        return push.create('matsumura-s', 'iwata-na', 1)
+        const datetime = Date.now();
+        return push.create('matsumura-s', 'iwata-na', 1, datetime)
           .then((result) => {
-            assert.equal('ショコ・マ・ツムー', result['boss'])
-            assert.equal('イワンコフ', result['subordinate'])
+            assert.equal('ショコ・マ・ツムー', result['boss'].name)
+            assert.equal('イワンコフ', result['subordinate'].name)
             assert.equal('1', result['push_id'])
+            assert.equal(datetime, result.datetime)
             return push.delete(result.id)
           })
       })

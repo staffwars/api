@@ -123,6 +123,19 @@ class Boss extends Kintone {
     return super.update(body);
   }
 
+  updatePushId(boss_id, push_id) {
+    const body = {
+      app: this.getAppId(),
+      id: boss_id,
+      record: {
+        push_id: {
+          value: push_id 
+        }
+      }
+    }
+    return super.update(body);
+  }
+
 }
 
 module.exports = Boss;
