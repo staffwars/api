@@ -63,6 +63,19 @@ describe('Kintone', () => {
       })
     })
 
+    context('start_datetime', () => {
+      it('開始日時を更新できる', () => {
+        return boss.updateStartDatetime(2, new Date(2112, 8, 3, 12, 34))
+          .then((record) => {
+            assert.equal('2112-09-03T03:34:00Z', record.start_datetime)
+            return boss.updateStartDatetime(2, new Date(2112, 9, 3, 12, 34))
+          })
+          .then((record) => {
+            assert.equal('2112-10-03T03:34:00Z', record.start_datetime)
+          })
+      })
+    })
+
     context('register', () => {
       beforeEach(() => {
         return boss.clearRegist(1)

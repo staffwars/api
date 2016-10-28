@@ -13,7 +13,8 @@ class Boss extends Kintone {
       name: record['user'].value[0].name,
       push_id: record['push_id'].value,
       organization: record['organization_select'].value[0].name,
-      register: record['register'].value
+      register: record['register'].value,
+      start_datetime: record['start_datetime'].value
     }
   }
 
@@ -107,6 +108,19 @@ class Boss extends Kintone {
         // 更新された上司データから待ち人情報を返す
         return boss['register']
       })
+  }
+
+  updateStartDatetime(boss_id, datetime) {
+    const body = {
+      app: this.getAppId(),
+      id: boss_id,
+      record: {
+        start_datetime: {
+          value: datetime
+        }
+      }
+    }
+    return super.update(body);
   }
 
 }
