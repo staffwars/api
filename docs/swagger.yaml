@@ -200,9 +200,11 @@ paths:
           schema:
             type: object
             properties:
-              id:
-                title: 部下ID
+              code:
+                description: 部下コード(メールアドレスの@より前)
+                title: 部下コード(メールアドレスの@より前)
                 type: string
+                default: iwata-na
       responses:
         200:
           description: 成功
@@ -246,6 +248,18 @@ paths:
           in: path
           required: true
           type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              code:
+                description: 部下コード(メールアドレスの@より前)
+                title: 部下コード(メールアドレスの@より前)
+                type: string
+                default: iwata-na
+
       responses:
         default:
           description: エラー
