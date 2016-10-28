@@ -204,6 +204,12 @@ paths:
                 title: 部下ID
                 type: string
       responses:
+        200:
+          description: 成功
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Subordinate"
         default:
           description: エラー
           schema:
@@ -218,6 +224,12 @@ paths:
           required: true
           type: string
       responses:
+        200:
+          description: 成功
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Subordinate"
         default:
           description: エラー
           schema:
@@ -248,7 +260,9 @@ paths:
       description: |
         リクエストを処理すると、MilkcocoaでPush通知がくる。通知のTypeに応じて処理が分かれる
         notice => カウントダウン開始時刻の通知
+        pre_start => カウントダウン開始５秒前の通知
         start => カウントダウン開始の通知
+        pre_finish => カウントダウン終了5秒前の通知
         finish => カウントダウン終了の通知
         result => 早押し結果の通知
       parameters:
@@ -270,7 +284,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /api/boss/{boss_id}/push/:
+  /api/boss/{boss_code}/push/:
     post:
       tags:
         - subordinate
@@ -278,10 +292,12 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: boss_id
+        - name: boss_code
+          description: 上司コード（メールアドレスの@より前）
           in: path
           required: true
           type: string
+          default: matsumura-s
         -
           name: body
           in: body
@@ -289,9 +305,11 @@ paths:
           schema:
             type: object
             properties:
-              id:
-                title: 部下ID
+              code:
+                description: 部下コード(メールアドレスの@より前)
+                title: 部下コード(メールアドレスの@より前)
                 type: string
+                default: iwata-na
       responses:
         200:
           description: 成功
@@ -319,6 +337,9 @@ definitions:
       id:
         type: string
         title: 部下ID
+      code:
+        type: string
+        title: コード(メールアドレスの@より前の部分)
       name:
         type: string
         title: 名前
@@ -330,10 +351,13 @@ definitions:
       id:
         type: string
         title: 上司ID
+      code:
+        type: string
+        title: コード(メールアドレスの@より前の部分)
       name:
         type: string
         title: 名前
-      affiliation:
+      organization:
         type: string
         title: 所属
       start_datetime:
@@ -344,8 +368,20 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Subordinate'
+      push_id:
+        title: 早押し大会を区別するためのID
+        description: 早押し大会を実行する度にインクリメントする
+        type: number
       push_list:
         title: 最後の早押し結果
         type: array
         items:
-          $ref: '#/definitions/Subordinate'
+          type: object
+          title: ランキング順データ
+          properties:
+            datetime:
+              type: string
+              title: 押した日時
+            subordinate:
+              $ref: '#/definitions/Subordinate'
+

@@ -9,8 +9,8 @@ class Push extends Kintone {
     return {
       id: record['record_number'].value,
       datetime: record['datetime'].value,
-      boss: record['boss'].value[0].name,
-      subordinate: record['subordinate'].value[0].name,
+      boss: record['boss'].value[0],
+      subordinate: record['subordinate'].value[0],
       push_id: record['push_id'].value
     }
   }
@@ -23,7 +23,10 @@ class Push extends Kintone {
     return super.list(query)
   }
 
-  create(boss_code, subordinate_code, push_id) {
+  create(boss_code, subordinate_code, push_id, datetime) {
+    if (datetime === undefined) {
+      datetime = Date.now();
+    }
     const body = {
       app: this.getAppId(),
       record: {
@@ -43,6 +46,9 @@ class Push extends Kintone {
         },
         push_id: {
           value: push_id
+        },
+        datetime: {
+          value: datetime
         }
       }
     }
