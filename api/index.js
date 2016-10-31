@@ -223,19 +223,19 @@ router.post('/boss/:id/start', (req, res, next) => {
 
       // カウントダウン終了５秒前の通知
       setTimeout(() => {
-        // push_idの更新
-        push_id++;
-        boss.updatePushId(boss_id, push_id)
-          .then(() => {
-            console.log('count down: pre');
-            ds.push({type: 'pre_finish', id: boss_id, datetime: start_date})
-          })
+        console.log('count down: pre');
+        ds.push({type: 'pre_finish', id: boss_id, datetime: start_date})
       }, (start_sec + count_sec - 5) * 1000);
 
       // カウントダウン終了の通知
       setTimeout(() => {
-        console.log('count down: finish');
-        ds.push({type: 'finish', id: boss_id, datetime: start_date})
+        // push_idの更新
+        push_id++;
+        boss.updatePushId(boss_id, push_id)
+          .then(() => {
+            console.log('count down: finish');
+            ds.push({type: 'finish', id: boss_id, datetime: start_date})
+          })
       }, (start_sec + count_sec) * 1000);
 
       // 結果の通知
