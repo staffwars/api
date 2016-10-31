@@ -36,7 +36,10 @@ paths:
         200:
           description: 成功
           schema:
-            $ref: '#/definitions/Subordinate'
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Subordinate'
         default:
           description: エラー
           schema:
@@ -49,9 +52,13 @@ paths:
         200:
           description: 成功
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Subordinate'
+            type: object
+            properties:
+              data:
+                title: データ
+                type: array
+                items:
+                  $ref: '#/definitions/Subordinate'
         default:
           description: エラー
           schema:
@@ -67,7 +74,6 @@ paths:
           in: path
           required: true
           type: string
-          default: 2
         - name: body
           in: body
           required: true
@@ -82,7 +88,10 @@ paths:
         200:
           description: 成功
           schema:
-            $ref: '#/definitions/Subordinate'
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Subordinate'
         default:
           description: エラー
           schema:
@@ -96,12 +105,14 @@ paths:
           in: path
           required: true
           type: string
-          default: 2
       responses:
         200:
           description: 成功
           schema:
-            $ref: '#/definitions/Subordinate'
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Subordinate'
         default:
           description: エラー
           schema:
@@ -131,7 +142,10 @@ paths:
         200:
           description: 成功
           schema:
-            $ref: '#/definitions/Boss'
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Boss'
         default:
           description: エラー
           schema:
@@ -144,9 +158,13 @@ paths:
         200:
           description: 成功
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Boss'
+            type: object
+            properties:
+              data:
+                title: データ
+                type: array
+                items:
+                  $ref: '#/definitions/Boss'
         default:
           description: エラー
           schema:
@@ -162,7 +180,6 @@ paths:
           in: path
           required: true
           type: string
-          default: 1
         - name: body
           in: body
           required: true
@@ -172,15 +189,14 @@ paths:
               name:
                 title: 名前
                 type: string
-              start_datetime:
-                title: 開始予定時刻
-                type: string
-                default: '2112-10-03 12:34:00'
       responses:
         200:
           description: 成功
           schema:
-            $ref: '#/definitions/Boss'
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Boss'
         default:
           description: エラー
           schema:
@@ -194,12 +210,14 @@ paths:
           in: path
           required: true
           type: string
-          default: 1
       responses:
         200:
           description: 成功
           schema:
-            $ref: '#/definitions/Subordinate'
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Boss'
         default:
           description: エラー
           schema:
@@ -216,7 +234,6 @@ paths:
           in: path
           required: true
           type: string
-          default: 1
         - name: body
           in: body
           required: true
@@ -232,9 +249,12 @@ paths:
         200:
           description: 成功
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Subordinate"
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Subordinate"
         default:
           description: エラー
           schema:
@@ -248,14 +268,16 @@ paths:
           in: path
           required: true
           type: string
-          default: 1
       responses:
         200:
           description: 成功
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Subordinate"
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Subordinate"
         default:
           description: エラー
           schema:
@@ -272,7 +294,6 @@ paths:
           in: path
           required: true
           type: string
-          default: 1
         - name: body
           in: body
           required: true
@@ -289,9 +310,12 @@ paths:
         200:
           description: 成功
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Subordinate"
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Subordinate"
         default:
           description: エラー
           schema:
@@ -315,7 +339,6 @@ paths:
           in: path
           required: true
           type: string
-          default: 1
       responses:
         200:
           description: 成功
@@ -339,10 +362,11 @@ paths:
         - application/json
       parameters:
         - name: boss_code
+          description: 上司コード（メールアドレスの@より前）
           in: path
           required: true
           type: string
-          default: 1
+          default: matsumura-s
         -
           name: body
           in: body
@@ -382,15 +406,12 @@ definitions:
       id:
         type: string
         title: 部下ID
-        default: 2
       code:
         type: string
         title: コード(メールアドレスの@より前の部分)
-        default: iwata-na
       name:
         type: string
         title: 名前
-        default: 'イワンコフ'
 
   Boss:
     title: 上司情報
@@ -399,23 +420,18 @@ definitions:
       id:
         type: string
         title: 上司ID
-        default: 1
       code:
         type: string
         title: コード(メールアドレスの@より前の部分)
-        default: matsumura-s
       name:
         type: string
         title: 名前
-        default: ショコ・マ・ツム−
       organization:
         type: string
         title: 所属
-        default: '全社員早押上司争奪戦推進機関'
       start_datetime:
         type: string
         title: 開始予定時刻
-        default: '2112-09-03T03:34:00Z'
       registry:
         title: 待っている部下達
         type: array
@@ -425,7 +441,6 @@ definitions:
         title: 早押し大会を区別するためのID
         description: 早押し大会を実行する度にインクリメントする
         type: number
-        default: 0
       push_list:
         title: 最後の早押し結果
         type: array
