@@ -130,8 +130,13 @@ router.post('/boss/:id', (req, res, next) => {
  */
 router.get('/boss/:id', (req, res, next) => {
   boss.read(req.params.id)
-    .then( (boss) => {
-      success_response(res, boss);
+    .then( (boss_result) => {
+      const push_id = Number(boss_result.push_id);
+      push.list(boss_result.code, push_id)
+        .then((push_result) => {
+          boss_result['push_list'] = push_result
+          success_response(res, boss_result);
+        })
     })
     .catch((error) => {
       error_response(res, 'BossError', error);
@@ -194,6 +199,7 @@ router.post('/boss/:id/start', (req, res, next) => {
       const start_sec = 10; // 何秒後に開始するかの指定
       const count_sec = 10; // カウントダウン時間
       const result_sec = 5; // 結果通知時間
+      let push_id = Number(result.push_id);
 
       // 開始時刻
       let start_date = new Date()
@@ -217,8 +223,13 @@ router.post('/boss/:id/start', (req, res, next) => {
 
       // カウントダウン終了５秒前の通知
       setTimeout(() => {
-        console.log('count down: pre');
-        ds.push({type: 'pre_finish', id: boss_id, datetime: start_date})
+        // push_idの更新
+        push_id++;
+        boss.updatePushId(boss_id, push_id)
+          .then(() => {
+            console.log('count down: pre');
+            ds.push({type: 'pre_finish', id: boss_id, datetime: start_date})
+          })
       }, (start_sec + count_sec - 5) * 1000);
 
       // カウントダウン終了の通知
@@ -230,7 +241,6 @@ router.post('/boss/:id/start', (req, res, next) => {
       // 結果の通知
       setTimeout(() => {
         console.log('count down: result');
-        let push_id = Number(result.push_id);
         push.list(result.code, push_id)
           .then((result) => {
             ds.push({
@@ -240,9 +250,6 @@ router.post('/boss/:id/start', (req, res, next) => {
               result: result
             });
           })
-        // push_idの更新
-        push_id++;
-        boss.updatePushId(boss_id, push_id)
         // 待ち人を消す
         boss.clearRegist(boss_id);
       }, (start_sec + count_sec + result_sec) * 1000);
