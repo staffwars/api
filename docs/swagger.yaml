@@ -415,6 +415,10 @@ definitions:
         type: string
         title: 名前
         default: イワンコフ
+      organization:
+        type: string
+        title: 所属
+        default: 全社員早押上司争奪戦推進機関
 
   Boss:
     title: 上司情報
