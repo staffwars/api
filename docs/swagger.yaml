@@ -82,7 +82,7 @@ paths:
         200:
           description: 成功
           schema:
-            $ref: '#/definitions/Boss'
+            $ref: '#/definitions/Subordinate'
         default:
           description: エラー
           schema:
@@ -98,6 +98,10 @@ paths:
           type: string
           default: 2
       responses:
+        200:
+          description: 成功
+          schema:
+            $ref: '#/definitions/Subordinate'
         default:
           description: エラー
           schema:
@@ -192,6 +196,10 @@ paths:
           type: string
           default: 1
       responses:
+        200:
+          description: 成功
+          schema:
+            $ref: '#/definitions/Subordinate'
         default:
           description: エラー
           schema:
@@ -278,6 +286,12 @@ paths:
                 default: iwata-na
 
       responses:
+        200:
+          description: 成功
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Subordinate"
         default:
           description: エラー
           schema:
