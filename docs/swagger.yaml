@@ -406,12 +406,15 @@ definitions:
       id:
         type: string
         title: 部下ID
+        default: 2
       code:
         type: string
         title: コード(メールアドレスの@より前の部分)
+        default: iwata-na
       name:
         type: string
         title: 名前
+        default: イワンコフ
 
   Boss:
     title: 上司情報
