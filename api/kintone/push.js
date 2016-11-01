@@ -21,6 +21,17 @@ class Push extends Kintone {
     }
     const query = 'boss in ("' + boss_code + '") and push_id=' + push_id;
     return super.list(query)
+      .then((result) => {
+        let subordinate_list = []
+        return result.reverse().filter((item) => {
+          // リストに存在しなければ追加する
+          const f = subordinate_list.indexOf(item.subordinate.code) < 0
+          subordinate_list.push(item.subordinate.code)
+          return f
+        })
+      })
+      // 互換性の為に反転する
+      .then((result) => {return result.reverse()})
   }
 
   create(boss_code, subordinate_code, push_id, datetime) {
