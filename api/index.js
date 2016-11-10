@@ -122,7 +122,14 @@ router.get('/boss', (req, res, next) => {
  * ボス情報の更新
  */
 router.post('/boss/:id', (req, res, next) => {
-  error_response(res, 'NotImpl')
+  const start_datetime = req.body.start_datetime
+  boss.updateStartDatetime(req.params.id, start_datetime)
+    .then((result) => {
+      success_response(res, result);
+    })
+    .catch((error) => {
+      error_response(res, 'BossError', error);
+    })
 })
 
 /**

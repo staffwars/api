@@ -61,6 +61,9 @@ class Kintone {
         if (response.statusCode == 500) {
           return reject(response.statusMessage);
         }
+        if (body.code != undefined) {
+          return reject(body);
+        }
         resolve(body);
       })
     })
@@ -139,6 +142,13 @@ class Kintone {
    */
   delete(id) {
     return this._delete('records.json?app=' + this.app_id + '&ids[0]=' + id)
+  }
+
+  /**
+   * 添付ファイルのダウンロード
+   */
+  download(filekey) {
+    return this._get('file.json?fileKey=' + fileKey)
   }
 }
 

@@ -6,6 +6,7 @@ class Push extends Kintone {
   }
 
   normalize(record) {
+    super.normalize(record);
     return {
       id: record['record_number'].value,
       datetime: record['datetime'].value,

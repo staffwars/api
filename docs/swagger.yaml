@@ -426,6 +426,10 @@ definitions:
         type: string
         title: 所属
         default: 全社員早押上司争奪戦推進機関
+      icon:
+        type: string
+        title: アイコン画像のURL
+        default: http://staffwars.azurewebsites.net/icon/
 
   Boss:
     title: 上司情報

@@ -6,12 +6,14 @@ class Subordinate extends Kintone {
   }
 
   normalize(record) {
-      return {
-          id:   record['record_number'].value,
-          code: record['user'].value[0].code,
-          name: record['user'].value[0].name,
-          organization: record['organization_select'].value[0].name
-      }
+    super.normalize(record);
+    return {
+      id:   record['record_number'].value,
+      code: record['user'].value[0].code,
+      name: record['user'].value[0].name,
+      organization: record['organization_select'].value[0].name,
+      icon: record['icon'].value
+    }
   }
 
   create(code) {

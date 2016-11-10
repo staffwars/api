@@ -6,15 +6,16 @@ class Boss extends Kintone {
   }
 
   normalize(record) {
-    super.normalize();
+    super.normalize(record);
     return {
-      id:   record['record_number'].value,
-      code: record['user'].value[0].code,
-      name: record['user'].value[0].name,
-      push_id: record['push_id'].value,
-      organization: record['organization_select'].value[0].name,
-      register: record['register'].value,
-      start_datetime: record['start_datetime'].value
+      id:             record['record_number'].value,
+      code:           record['user'].value[0].code,
+      name:           record['user'].value[0].name,
+      push_id:        record['push_id'].value,
+      organization:   record['organization_select'].value[0].name,
+      register:       record['register'].value,
+      start_datetime: record['start_datetime'].value,
+      icon:           record['icon'].value
     }
   }
 
